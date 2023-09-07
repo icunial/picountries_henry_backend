@@ -52,7 +52,21 @@ const findCountryByIdApi = async (id) => {
   }
 };
 
+// Get countries by their name from API
+const findByNameApi = async (name) => {
+  try {
+    const apiResults = await getAllApi();
+
+    return apiResults.filter((r) =>
+      r.name.toUpperCase().startsWith(name.toUpperCase())
+    );
+  } catch (error) {
+    throw new Error("Error trying to get a country by its name from API");
+  }
+};
+
 module.exports = {
   getAllApi,
   findCountryByIdApi,
+  findByNameApi,
 };
