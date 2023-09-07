@@ -4,6 +4,18 @@ const PORT = process.env.PORT || 5000;
 
 const router = require("./src/routes/index");
 
+const db = require("./src/db");
+
+// Check DB connection
+db.once("open", () => {
+  console.log("Connected to MongoDB");
+});
+
+// Check for DB errors
+db.on("error", (error) => {
+  console.log(error);
+});
+
 // Body-Parser Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
