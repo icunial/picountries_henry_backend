@@ -130,6 +130,19 @@ const orderCountriesFromLessToMore = async () => {
   }
 };
 
+// Get countries filtered by region
+const countriesFilteredByRegion = async (region) => {
+  try {
+    const apiResults = await getAllApi();
+
+    return apiResults.filter(
+      (r) => r.region.toUpperCase() === region.toUpperCase()
+    );
+  } catch (error) {
+    throw new Error("Error trying to filter countries by region from API");
+  }
+};
+
 module.exports = {
   getAllApi,
   findCountryByIdApi,
@@ -138,4 +151,5 @@ module.exports = {
   orderCountriesFromZtoA,
   orderCountriesFromMoreToLess,
   orderCountriesFromLessToMore,
+  countriesFilteredByRegion,
 };
