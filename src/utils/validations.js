@@ -28,9 +28,9 @@ const validateSeason = (season) => {
   if (!season) return "Season parameter is missing";
   if (typeof season !== "string") return "Season must be a string!";
   if (
-    season.toLowerCase() !== "autumn" ||
-    season.toLowerCase() !== "winter" ||
-    season.toLowerCase() !== "spring" ||
+    season.toLowerCase() !== "autumn" &&
+    season.toLowerCase() !== "winter" &&
+    season.toLowerCase() !== "spring" &&
     season.toLowerCase() !== "summer"
   ) {
     return "Season must be AUTUMN, WINTER, SPRING or SUMMER";
