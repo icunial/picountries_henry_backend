@@ -8,6 +8,7 @@ const countriesController = require("../controllers/countries");
 
 const validations = require("../utils/validations");
 
+// Create a new Activity
 router.post("/", async (req, res, next) => {
   const { name, difficulty, duration, season, countries } = req.body;
 
@@ -38,6 +39,24 @@ router.post("/", async (req, res, next) => {
       statusCode: 400,
       msg: validations.validateSeason(season),
     });
+  }
+
+  try {
+    const activityCreated = await Activity.create({
+      name,
+      difficulty,
+      duration,
+      season: season.toUpperCase(),
+    });
+
+    if (activityCreated) {
+      return res.status(201).json({
+        statusCode: 201,
+        data: activityCreated,
+      });
+    }
+  } catch (error) {
+    return next(new Error("Error trying to create a new activity!"));
   }
 });
 
