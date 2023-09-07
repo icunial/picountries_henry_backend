@@ -113,6 +113,23 @@ const orderCountriesFromMoreToLess = async () => {
   }
 };
 
+// Get countries ordered from less population to more from API
+const orderCountriesFromLessToMore = async () => {
+  try {
+    const apiResults = await getAllApi();
+
+    return apiResults.sort((a, b) => {
+      if (a.population > b.population) return 1;
+      if (a.population < b.population) return -1;
+      return 0;
+    });
+  } catch (error) {
+    throw new Error(
+      "Error trying to order countries from less population to more from API"
+    );
+  }
+};
+
 module.exports = {
   getAllApi,
   findCountryByIdApi,
@@ -120,4 +137,5 @@ module.exports = {
   orderCountriesFromAtoZ,
   orderCountriesFromZtoA,
   orderCountriesFromMoreToLess,
+  orderCountriesFromLessToMore,
 };
