@@ -2,6 +2,8 @@ const axios = require("axios");
 
 const API_URL = "https://restcountries.com/v3/all";
 
+const Activity = require("../models/Activity");
+
 // Get all countries from API
 const getAllApi = async () => {
   const results = [];
@@ -20,7 +22,6 @@ const getAllApi = async () => {
     }
     return results;
   } catch (error) {
-    console.log(error.message);
     throw new Error("Error trying to get all countries from API");
   }
 };
@@ -33,8 +34,21 @@ const findCountryByIdApi = async (id) => {
     const apiResults = await axios.get(API_URL);
 
     if (apiResults) {
-      apiResults.data.forEach((r) => {
+      for (r of apiResults.data) {
         if (r.cca3 === id.toUpperCase()) {
+          const activities = [];
+          const dbResults = await Activity.find({ countries: `${r.cca3}` });
+
+          dbResults.forEach((r) => {
+            activities.push({
+              name: r.name,
+              difficulty: r.difficulty,
+              duration: r.duration,
+              season: r.season,
+              countries: r.countries,
+            });
+          });
+
           result.push({
             id: r.cca3,
             name: r.name.common,
@@ -44,9 +58,10 @@ const findCountryByIdApi = async (id) => {
             subregion: r.subregion,
             area: r.area,
             population: r.population,
+            activities,
           });
         }
-      });
+      }
     }
     return result;
   } catch (error) {
