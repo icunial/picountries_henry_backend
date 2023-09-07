@@ -13,6 +13,7 @@ const getAllApi = async () => {
           name: r.name.common,
           region: r.region,
           flag: r.flags[1],
+          population: r.population,
         });
       });
     }
@@ -95,10 +96,28 @@ const orderCountriesFromZtoA = async () => {
   }
 };
 
+// Get countries ordered from more population to less from API
+const orderCountriesFromMoreToLess = async () => {
+  try {
+    const apiResults = await getAllApi();
+
+    return apiResults.sort((a, b) => {
+      if (a.population < b.population) return 1;
+      if (a.population > b.population) return -1;
+      return 0;
+    });
+  } catch (error) {
+    throw new Error(
+      "Error trying to order countries from more population to less from API"
+    );
+  }
+};
+
 module.exports = {
   getAllApi,
   findCountryByIdApi,
   findByNameApi,
   orderCountriesFromAtoZ,
   orderCountriesFromZtoA,
+  orderCountriesFromMoreToLess,
 };
