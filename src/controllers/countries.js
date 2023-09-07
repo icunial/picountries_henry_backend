@@ -29,7 +29,6 @@ const getAllApi = async () => {
 // Get country by its id from API
 const findCountryByIdApi = async (id) => {
   const result = [];
-
   try {
     const apiResults = await axios.get(API_URL);
 
@@ -38,16 +37,17 @@ const findCountryByIdApi = async (id) => {
         if (r.cca3 === id.toUpperCase()) {
           const activities = [];
           const dbResults = await Activity.find({ countries: `${r.cca3}` });
-
-          dbResults.forEach((r) => {
-            activities.push({
-              name: r.name,
-              difficulty: r.difficulty,
-              duration: r.duration,
-              season: r.season,
-              countries: r.countries,
+          if (dbResults) {
+            dbResults.forEach((r) => {
+              activities.push({
+                name: r.name,
+                difficulty: r.difficulty,
+                duration: r.duration,
+                season: r.season,
+                countries: r.countries,
+              });
             });
-          });
+          }
 
           result.push({
             id: r.cca3,
@@ -58,7 +58,7 @@ const findCountryByIdApi = async (id) => {
             subregion: r.subregion,
             area: r.area,
             population: r.population,
-            activities,
+            activities: activities ? activities : [],
           });
         }
       }
