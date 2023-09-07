@@ -3,9 +3,6 @@ const mongoose = require("mongoose");
 // Activity schema
 const activitySchema = mongoose.Schema(
   {
-    _id: {
-      type: Number,
-    },
     name: {
       type: String,
       required: true,
@@ -24,13 +21,10 @@ const activitySchema = mongoose.Schema(
     },
     countries: {
       type: [String],
-      required: true,
     },
   },
   {
-    timestamps: {
-      createdAt,
-    },
+    timestamps: true,
   }
 );
 
