@@ -16,6 +16,14 @@ const validateDifficulty = (difficulty) => {
   return false;
 };
 
+// validates duration
+const validateDuration = (duration) => {
+  if (!duration) return "Duration parameter is missing";
+  if (typeof duration !== "number") return "Duration must be a number!";
+  return false;
+};
+
 module.exports = {
   validateName,
+  validateDifficulty,
 };
