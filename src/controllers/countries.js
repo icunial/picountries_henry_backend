@@ -10,6 +10,7 @@ const getAllApi = async () => {
     if (apiResults) {
       apiResults.data.forEach((r) => {
         results.push({
+          id: r.cca3,
           name: r.name.common,
           region: r.region,
           flag: r.flags[1],
@@ -35,7 +36,7 @@ const findCountryByIdApi = async (id) => {
       apiResults.data.forEach((r) => {
         if (r.cca3 === id.toUpperCase()) {
           result.push({
-            id: r.cc3,
+            id: r.cca3,
             name: r.name.common,
             region: r.region,
             flag: r.flags[1],
