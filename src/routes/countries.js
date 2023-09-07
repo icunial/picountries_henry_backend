@@ -95,4 +95,29 @@ router.get("/filter/:opt", async (req, res, next) => {
   }
 });
 
+// GET countries filterd by region
+router.get("/region/:region", async (req, res, next) => {
+  const { region } = req.params;
+
+  try {
+    const apiResults = await countriesController.countriesFilteredByRegion(
+      region
+    );
+
+    if (!apiResults.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Region ${region} not found!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: apiResults,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;
