@@ -59,4 +59,40 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+// Order features routes
+router.get("/filter/:opt", async (req, res, next) => {
+  const { opt } = req.params;
+
+  try {
+    let results = [];
+
+    switch (opt) {
+      case "az":
+        results = await countriesController.orderCountriesFromAtoZ();
+        break;
+      case "za":
+        results = await countriesController.orderCountriesFromZtoA();
+        break;
+      case "more":
+        results = await countriesController.orderCountriesFromMoreToLess();
+        break;
+      case "less":
+        results = await countriesController.orderCountriesFromLessToMore();
+        break;
+      default:
+        return res.status(400).json({
+          statusCode: 400,
+          msg: `Filter not available`,
+        });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: results,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;
