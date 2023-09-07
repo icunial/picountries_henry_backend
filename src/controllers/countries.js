@@ -65,8 +65,24 @@ const findByNameApi = async (name) => {
   }
 };
 
+// Get countries ordered from A to Z from API
+const orderCountriesFromAtoZ = async () => {
+  try {
+    const apiResults = await getAllApi();
+
+    return apiResults.sort((a, b) => {
+      if (a.name > b.name) return 1;
+      if (a.name < b.name) return -1;
+      return 0;
+    });
+  } catch (error) {
+    throw new Error("Error trying to order countries from A to Z from API");
+  }
+};
+
 module.exports = {
   getAllApi,
   findCountryByIdApi,
   findByNameApi,
+  orderCountriesFromAtoZ,
 };
