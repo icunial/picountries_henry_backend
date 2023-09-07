@@ -41,12 +41,22 @@ router.post("/", async (req, res, next) => {
     });
   }
 
+  const countriesIDs = [];
+
   try {
+    for (country of countries) {
+      const result = await countriesController.findByNameApi(country);
+      if (result.length) {
+        countriesIDs.push(result[0].id);
+      }
+    }
+
     const activityCreated = await Activity.create({
       name,
       difficulty,
       duration,
       season: season.toUpperCase(),
+      countries: countriesIDs,
     });
 
     if (activityCreated) {
