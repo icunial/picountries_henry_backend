@@ -59,7 +59,7 @@ router.get("/", async (req, res, next) => {
         });
       }
 
-      const totalPages = Math.round(apiResults.length / 10);
+      const totalPages = Math.ceil((apiResults.length - 9) / 10 + 1);
 
       // Validates if page exists
       if (parseInt(page) === 0 || parseInt(page) > totalPages) {
@@ -70,14 +70,29 @@ router.get("/", async (req, res, next) => {
       }
     }
 
+    if (!page || parseInt(page) === 1) {
+      return res.status(200).json({
+        statusCode: 200,
+        resultsPerPage: apiResults.slice(0, 9).length,
+        totalResults: apiResults.length,
+        totalPages: Math.ceil((apiResults.length - 9) / 10 + 1),
+        page: 1,
+        data: apiResults.slice(0, 9),
+      });
+    }
+
     res.status(200).json({
       statusCode: 200,
+      resultsPerPage: countriesController.getCountriesPagination(
+        apiResults,
+        parseInt(page)
+      ).length,
       totalResults: apiResults.length,
-      totalPages: Math.round(apiResults.length / 10),
-      page: parseInt(page) || 1,
+      totalPages: Math.ceil((apiResults.length - 9) / 10 + 1),
+      page: parseInt(page),
       data: countriesController.getCountriesPagination(
         apiResults,
-        parseInt(page) || 1
+        parseInt(page)
       ),
     });
   } catch (error) {
