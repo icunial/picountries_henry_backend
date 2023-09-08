@@ -159,6 +159,11 @@ const countriesFilteredByRegion = async (region) => {
   }
 };
 
+// Get countries pagination
+const getCountriesPagination = (countries, page) => {
+  return countries.slice(page * 10 - 10, page * 10);
+};
+
 module.exports = {
   getAllApi,
   findCountryByIdApi,
@@ -168,4 +173,5 @@ module.exports = {
   orderCountriesFromMoreToLess,
   orderCountriesFromLessToMore,
   countriesFilteredByRegion,
+  getCountriesPagination,
 };
