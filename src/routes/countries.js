@@ -51,11 +51,21 @@ router.get("/", async (req, res, next) => {
     const apiResults = await countriesController.getAllApi();
 
     if (page) {
-      //validate if its a number
+      // Validates if its a number
       if (page !== 0 && !parseInt(page)) {
         return res.status(400).json({
           statusCode: 400,
           msg: `Page param must be a number!`,
+        });
+      }
+
+      const totalPages = Math.round(apiResults.length / 10);
+
+      // Validates if page exists
+      if (parseInt(page) === 0 || parseInt(pages) > totalPages) {
+        return res.status(404).json({
+          statusCode: 404,
+          msg: `Page ${page} not found!`,
         });
       }
     }
