@@ -62,7 +62,7 @@ router.get("/", async (req, res, next) => {
       const totalPages = Math.round(apiResults.length / 10);
 
       // Validates if page exists
-      if (parseInt(page) === 0 || parseInt(pages) > totalPages) {
+      if (parseInt(page) === 0 || parseInt(page) > totalPages) {
         return res.status(404).json({
           statusCode: 404,
           msg: `Page ${page} not found!`,
@@ -72,7 +72,13 @@ router.get("/", async (req, res, next) => {
 
     res.status(200).json({
       statusCode: 200,
-      data: apiResults,
+      totalResults: apiResults.length,
+      totalPages: Math.round(apiResults.length / 10),
+      page: parseInt(page) || 1,
+      data: countriesController.getCountriesPagination(
+        apiResults,
+        parseInt(page) || 1
+      ),
     });
   } catch (error) {
     return next(error);
