@@ -28,7 +28,7 @@ router.get("/:id", async (req, res, next) => {
 
 // GET all countries
 router.get("/", async (req, res, next) => {
-  const { name } = req.query;
+  const { name, page } = req.query;
 
   try {
     // Search country by its name
@@ -49,6 +49,16 @@ router.get("/", async (req, res, next) => {
     }
 
     const apiResults = await countriesController.getAllApi();
+
+    if (page) {
+      //validate if its a number
+      if (page !== 0 && !parseInt(page)) {
+        return res.status(400).json({
+          statusCode: 400,
+          msg: `Page param must be a number!`,
+        });
+      }
+    }
 
     res.status(200).json({
       statusCode: 200,
